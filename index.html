@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="UTF-8">
+<title>Davomat Tizimi</title>
+
+<style>
+
+body{
+font-family: Arial;
+background: linear-gradient(135deg,#4facfe,#00f2fe);
+display:flex;
+justify-content:center;
+align-items:center;
+height:100vh;
+margin:0;
+}
+
+.container{
+background:white;
+padding:25px;
+border-radius:12px;
+box-shadow:0 10px 25px rgba(0,0,0,0.2);
+width:420px;
+text-align:center;
+}
+
+h2{
+margin-bottom:20px;
+}
+
+.students{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:10px;
+}
+
+.student{
+padding:10px;
+border:none;
+border-radius:8px;
+background:#e0e0e0;
+cursor:pointer;
+font-size:15px;
+transition:0.2s;
+}
+
+.student:hover{
+transform:scale(1.05);
+}
+
+.present{
+background:#28a745;
+color:white;
+}
+
+.absent{
+background:#dc3545;
+color:white;
+}
+
+.check{
+margin-top:20px;
+padding:12px;
+width:100%;
+border:none;
+border-radius:8px;
+font-size:16px;
+background:#007bff;
+color:white;
+cursor:pointer;
+}
+
+.check:hover{
+background:#0056b3;
+}
+
+.modal{
+display:none;
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:rgba(0,0,0,0.6);
+}
+
+.modal-content{
+background:white;
+padding:25px;
+border-radius:12px;
+width:350px;
+margin:150px auto;
+text-align:center;
+}
+
+.close{
+margin-top:15px;
+padding:8px 20px;
+border:none;
+background:black;
+color:white;
+border-radius:6px;
+cursor:pointer;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h2>📋 Davomat</h2>
+
+<div class="students" id="students"></div>
+
+<button class="check" onclick="checkAttendance()">Tekshirish</button>
+
+</div>
+
+
+<div class="modal" id="modal">
+<div class="modal-content">
+
+<h3>Davomat Natijasi</h3>
+
+<div id="result"></div>
+
+<button class="close" onclick="closeModal()">Yopish</button>
+
+</div>
+</div>
+
+
+<script>
+
+let students = [
+"Nodir","Farrux","Doston","Shohjahon","Sardor","Dilshod","Umirbek",
+"Otaxon","Bunyod","O'ktamboy","Og'abek","Shahzod","G'ayrat",
+"Shaxriyor","Izzatbek","Maxmud"
+];
+
+let container=document.getElementById("students");
+
+students.forEach(name=>{
+
+let btn=document.createElement("button");
+
+btn.innerText=name;
+
+btn.className="student";
+
+btn.onclick=function(){
+btn.classList.toggle("present");
+btn.classList.remove("absent");
+}
+
+container.appendChild(btn);
+
+});
+
+function checkAttendance(){
+
+let buttons=document.querySelectorAll(".student");
+
+let absent=[];
+let present=0;
+
+buttons.forEach(btn=>{
+
+if(btn.classList.contains("present")){
+present++;
+}else{
+btn.classList.add("absent");
+absent.push(btn.innerText);
+}
+
+});
+
+let html=`
+<p><b>Jami o'quvchi:</b> ${students.length}</p>
+<p><b>Borlar:</b> ${present}</p>
+<p><b>Yo'qlar:</b> ${absent.length}</p>
+`;
+
+if(absent.length>0){
+html+=`<p><b>Yo'q o'quvchilar:</b><br>${absent.join("<br>")}</p>`;
+}else{
+html+=`<p style="color:green"><b>Hamma kelgan ✅</b></p>`;
+}
+
+document.getElementById("result").innerHTML=html;
+
+document.getElementById("modal").style.display="block";
+
+}
+
+function closeModal(){
+document.getElementById("modal").style.display="none";
+}
+
+</script>
+
+</body> 
+</html> 
